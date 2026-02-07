@@ -38,6 +38,12 @@ export default function ChatUI() {
       body: JSON.stringify({ question }), // ⭐ only question
     });
 
+    if (!res.ok) {
+      const text = await res.text(); // ⭐ safe
+      console.log(text);
+      throw new Error("Upload failed");
+    }
+
     const data = await res.json();
     console.log("response of ask api: ", data);
 

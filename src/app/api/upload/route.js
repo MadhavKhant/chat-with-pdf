@@ -23,28 +23,7 @@ export async function POST(req) {
     // ==============================
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
-
-    // // ==============================
-    // // ✅ create uploads folder
-    // // ==============================
-    // const uploadDir = path.join(process.cwd(), "public/uploads");
-
-    // if (!fs.existsSync(uploadDir)) {
-    //   fs.mkdirSync(uploadDir, { recursive: true }); // create if not exists
-    // }
-
-    // // ==============================
-    // // ✅ unique filename (avoid overwrite)
-    // // ==============================
-    // const fileName = Date.now() + "-" + file.name; // ⭐ added unique name
-
-    // const filePath = path.join(uploadDir, fileName);
-
-    // // ==============================
-    // // ✅ save file
-    // // ==============================
-    // fs.writeFileSync(filePath, buffer);
-
+    
     const { userId } = await auth();
     console.log("USER ID:", userId);
     

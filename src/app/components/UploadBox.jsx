@@ -33,6 +33,12 @@ export default function UploadBox() {
       body: formData,
     });
 
+    if (!res.ok) {
+      const text = await res.text(); // ⭐ safe
+      console.log(text);
+      throw new Error("Upload failed");
+    }
+
     const data = await res.json();
     console.log("upload pdf response: ", data);
 

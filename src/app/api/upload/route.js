@@ -1,3 +1,6 @@
+export const runtime = "nodejs";
+
+
 import { NextResponse } from "next/server";
 import { processPDF } from "@/app/lib/processPDF";
 import { auth } from "@clerk/nextjs/server";
@@ -23,7 +26,7 @@ export async function POST(req) {
     // ==============================
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
-    
+
     const { userId } = await auth();
     console.log("USER ID:", userId);
     

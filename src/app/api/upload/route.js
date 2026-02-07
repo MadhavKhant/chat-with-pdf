@@ -1,8 +1,6 @@
 export const runtime = "nodejs"; // ⭐ required for fs
 
 import { NextResponse } from "next/server";
-import fs from "fs";
-import path from "path";
 import { processPDF } from "@/app/lib/processPDF";
 import { auth } from "@clerk/nextjs/server";
 
@@ -28,31 +26,31 @@ export async function POST(req) {
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
-    // ==============================
-    // ✅ create uploads folder
-    // ==============================
-    const uploadDir = path.join(process.cwd(), "public/uploads");
+    // // ==============================
+    // // ✅ create uploads folder
+    // // ==============================
+    // const uploadDir = path.join(process.cwd(), "public/uploads");
 
-    if (!fs.existsSync(uploadDir)) {
-      fs.mkdirSync(uploadDir, { recursive: true }); // create if not exists
-    }
+    // if (!fs.existsSync(uploadDir)) {
+    //   fs.mkdirSync(uploadDir, { recursive: true }); // create if not exists
+    // }
 
-    // ==============================
-    // ✅ unique filename (avoid overwrite)
-    // ==============================
-    const fileName = Date.now() + "-" + file.name; // ⭐ added unique name
+    // // ==============================
+    // // ✅ unique filename (avoid overwrite)
+    // // ==============================
+    // const fileName = Date.now() + "-" + file.name; // ⭐ added unique name
 
-    const filePath = path.join(uploadDir, fileName);
+    // const filePath = path.join(uploadDir, fileName);
 
-    // ==============================
-    // ✅ save file
-    // ==============================
-    fs.writeFileSync(filePath, buffer);
+    // // ==============================
+    // // ✅ save file
+    // // ==============================
+    // fs.writeFileSync(filePath, buffer);
 
     const { userId } = await auth();
     console.log("USER ID:", userId);
     
-    await processPDF(filePath, userId, file.name);
+    await processPDF(buffer, userId, file.name);
 
     // ==============================
     // ✅ response
@@ -60,7 +58,7 @@ export async function POST(req) {
     return NextResponse.json({
       success: true,
       message: "PDF uploaded successfully",
-      fileUrl: `/uploads/${fileName}`,
+      fileUrl: `/uploads/${file.name}`,
     });
   } catch (err) {
     console.log("UPLOAD ERROR:", err);

@@ -3,9 +3,10 @@
 import { useState, useRef, useEffect } from "react";
 import { Send } from "lucide-react";
 import { useRouter } from "next/navigation";
+import remarkGfm from "remark-gfm";
+import ReactMarkdown from "react-markdown";
 
 export default function ChatUI() {
-
   const router = useRouter();
 
   const [messages, setMessages] = useState([]);
@@ -14,24 +15,18 @@ export default function ChatUI() {
 
   const bottomRef = useRef(null);
 
-
   // auto scroll
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-
   // ==========================================
   // ASK QUESTION
   // ==========================================
   const handleAsk = async () => {
-
     if (!question.trim()) return;
 
-    const newMessages = [
-      ...messages,
-      { role: "user", text: question }
-    ];
+    const newMessages = [...messages, { role: "user", text: question }];
 
     setMessages(newMessages);
     setQuestion("");
@@ -45,21 +40,16 @@ export default function ChatUI() {
 
     const data = await res.json();
 
-    setMessages([
-      ...newMessages,
-      { role: "ai", text: data.answer }
-    ]);
+    setMessages([...newMessages, { role: "ai", text: data.answer }]);
 
     setLoading(false);
   };
-
 
   // ==========================================
   // UI
   // ==========================================
   return (
     <div className="h-screen flex flex-col bg-gray-100">
-
       {/* header */}
       <div className="p-4 bg-white shadow flex justify-between">
         <h1 className="font-bold">Chat with PDF</h1>
@@ -72,20 +62,18 @@ export default function ChatUI() {
         </button>
       </div>
 
-
       {/* messages */}
       <div className="flex-1 overflow-y-auto p-6 space-y-3">
-
         {messages.map((m, i) => (
           <div
             key={i}
-            className={`max-w-[70%] p-3 rounded-xl ${
+            className={`max-w-[70%] p-3 rounded-xl whitespace-pre-wrap ${
               m.role === "user"
                 ? "ml-auto bg-indigo-600 text-white"
-                : "bg-white shadow"
+                : "bg-white shadow whitespace-pre-wrap"
             }`}
           >
-            {m.text}
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>{m.text}</ReactMarkdown>
           </div>
         ))}
 
@@ -97,7 +85,6 @@ export default function ChatUI() {
 
         <div ref={bottomRef} />
       </div>
-
 
       {/* input */}
       <div className="p-4 bg-white border-t mb-15 flex gap-2">

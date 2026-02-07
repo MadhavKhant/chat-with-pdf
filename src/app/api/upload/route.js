@@ -1,5 +1,3 @@
-export const runtime = "nodejs"; // ⭐ required for fs
-
 import { NextResponse } from "next/server";
 import { processPDF } from "@/app/lib/processPDF";
 import { auth } from "@clerk/nextjs/server";

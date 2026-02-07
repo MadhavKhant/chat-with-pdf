@@ -28,10 +28,13 @@ export default function UploadBox() {
     const formData = new FormData();
     formData.append("pdf", file);
 
-    await fetch("/api/upload", {
+    const res = await fetch("/api/upload", {
       method: "POST",
       body: formData,
     });
+
+    const data = await res.json();
+    console.log("upload pdf response: ", data);
 
     // ⭐ after success → go to chat page
     router.push("/chat");

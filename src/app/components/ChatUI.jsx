@@ -39,6 +39,7 @@ export default function ChatUI() {
     });
 
     const data = await res.json();
+    console.log("response of ask api: ", data);
 
     setMessages([...newMessages, { role: "ai", text: data.answer }]);
 
